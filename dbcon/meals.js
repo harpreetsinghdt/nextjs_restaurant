@@ -7,3 +7,7 @@ export const getMeals = async () => {
   // throw new Error("loading data failed!");
   return db.prepare("select * from meals").all();
 };
+
+export const getMeal = (slug) => {
+  return db.prepare("select * from meals where slug = ?").get(slug);
+};
