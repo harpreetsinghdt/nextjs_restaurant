@@ -4,6 +4,17 @@ import Image from "next/image";
 import { getMeal } from "@/dbcon/meals";
 import { notFound } from "next/navigation";
 
+export async function generateMetadata({ params }) {
+  const meal = await getMeal(params.slug);
+  if (!meal) {
+    notFound();
+  }
+  return {
+    title: meal.title,
+    description: meal.summary,
+  };
+}
+
 const page = ({ params }) => {
   const meal = getMeal(params.slug);
   if (!meal) {
@@ -14,7 +25,11 @@ const page = ({ params }) => {
     <>
       <header className={cls.header}>
         <div className={cls.image}>
-          <Image src={meal.image} alt={"meal image"} fill />
+          <Image
+            src={`https://sainis-food-images.s3.us-east-2.amazonaws.com/${meal.image}`}
+            alt={"meal image"}
+            fill
+          />
         </div>
         <div className={cls.headerText}>
           <h1>{meal.title}</h1>

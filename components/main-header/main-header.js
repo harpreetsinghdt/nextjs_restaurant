@@ -11,7 +11,7 @@ const MainHeader = () => {
       <MainHeaderBackground />
       <header className={cls.header}>
         <Link href="/" className={cls.logo}>
-          <Image src={logoImg} alt="Food logo" /> Harp's Restaurant
+          <Image src={logoImg} alt="Food logo" /> Sainis Restaurant
         </Link>
         <nav className={cls.nav}>
           <ul>

@@ -1,8 +1,13 @@
 import fs from "node:fs";
+import { S3 } from "@aws-sdk/client-s3";
 
 import sql from "better-sqlite3";
 import slugify from "slugify";
 import xss from "xss";
+
+const s3 = new S3({
+  region: "us-east-2",
+});
 
 const db = sql("meals.db");
 
@@ -23,16 +28,24 @@ export const saveMeal = async (meal) => {
   const extn = meal.image.name.split(".").pop();
   const fileName = `${meal.slug}.${extn}`;
 
-  const stream = fs.createWriteStream(`public/images/${fileName}`);
+  // const stream = fs.createWriteStream(`public/images/${fileName}`);
   const bufferedImage = await meal.image.arrayBuffer();
 
-  stream.write(Buffer.from(bufferedImage), (err) => {
-    if (err) {
-      throw new Error("Saving image error!");
-    }
+  s3.putObject({
+    Bucket: "sainis-food-images",
+    Key: fileName,
+    Body: Buffer.from(bufferedImage),
+    ContentType: meal.image.type,
   });
 
-  meal.image = `/images/${fileName}`;
+  // stream.write(Buffer.from(bufferedImage), (err) => {
+  //   if (err) {
+  //     throw new Error("Saving image error!");
+  //   }
+  // });
+
+  // meal.image = `/images/${fileName}`;
+  meal.image = `${fileName}`;
 
   return db
     .prepare(

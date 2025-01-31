@@ -7,7 +7,11 @@ export default function MealItem({ title, slug, image, summary, creator }) {
     <article className={cls.meal}>
       <header>
         <div className={cls.image}>
-          <Image src={image} alt={title} fill />
+          <Image
+            src={`https://sainis-food-images.s3.us-east-2.amazonaws.com/${image}`}
+            alt={title}
+            fill
+          />
         </div>
         <div className={cls.headerText}>
           <h2>{title}</h2>

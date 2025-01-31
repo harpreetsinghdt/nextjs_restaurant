@@ -4,6 +4,11 @@ import cls from "./page.module.css";
 import MealGrid from "./meal-grid";
 import { getMeals } from "@/dbcon/meals";
 
+export const metadata = {
+  title: "All meals",
+  description: "Delicious meals for vibrant community.",
+};
+
 const Meals = async () => {
   const meals = await getMeals();
   return <MealGrid meals={meals} />;
